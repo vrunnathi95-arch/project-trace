@@ -4,17 +4,24 @@ import os
 import shutil
 import pandas as pd
 from fastapi.middleware.cors import CORSMiddleware
-
-
 from db import get_connection
-
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
 # ---------------- INIT ----------------
 
 app = FastAPI()
+
+# Absolute path to frontend folder
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
+
+app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -32,6 +39,11 @@ UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
+
+@app.get("/")
+def serve_frontend():
+    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+
 
 # ---------------- DATE SEARCH ----------------
 
