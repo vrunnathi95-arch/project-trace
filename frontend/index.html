@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>ProjectTrace</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 
-<!-- ================= HEADER ================= -->
+<!-- HEADER -->
 <header class="header">
     <div class="logo">
-        <!-- HARD RELOAD TO HOME -->
-        <a href="">
-            <img src="assets/robust_logo.png" alt="Robust Logo">
-        </a>
+        <img src="assets/robust_logo.png"
+             alt="Robust Materials Technology"
+             onclick="window.location.reload()">
     </div>
 
     <div class="header-center">
@@ -25,103 +24,92 @@
     </div>
 </header>
 
-<!-- ================= HERO SEARCH ================= -->
+<!-- UPLOAD BAR (TOP RIGHT BELOW HEADER) -->
+<div class="upload-bar">
+    <label class="upload-btn">
+        <span id="uploadText">⬆ Upload Data</span>
+        <input type="file" id="uploadFile" accept=".csv,.xls,.xlsx" hidden>
+    </label>
+</div>
+
+
+<!-- HERO SEARCH -->
 <section class="hero">
     <div class="search-box">
         <span class="filter-icon" onclick="toggleFilters()">⚙️</span>
-
         <input
+            type="text"
             id="query"
             placeholder="Describe a project, method, or material..."
         />
-
         <button onclick="semanticSearch()">Search</button>
     </div>
 </section>
 
-<!-- ================= FILTER PANEL ================= -->
-<section id="filterPanel" class="filter-panel hidden">
+<!-- FILTER PANEL -->
+<div id="filterPanel" class="filter-panel hidden">
     <div class="filter-group">
         <label>From Date</label>
-        <input type="date" id="from_date">
+        <input type="date">
     </div>
 
     <div class="filter-group">
         <label>To Date</label>
-        <input type="date" id="to_date">
+        <input type="date">
     </div>
 
     <div class="filter-group">
         <label>API</label>
-        <select id="api_filter">
+        <select>
             <option value="">All APIs</option>
         </select>
     </div>
-</section>
+</div>
 
-<!-- ================= RESULTS ================= -->
-<section id="results" class="results"></section>
+<!-- SEARCH RESULTS -->
+<div id="results" class="results"></div>
 
-<!-- ================= DOCUMENT DETAILS ================= -->
-<section id="documentDetails" class="document-details"></section>
+<!-- DOCUMENT DETAILS -->
+<div id="documentDetails" class="document-details"></div>
 
-<script src="js/app.js"></script>
-</body>
-
-<!-- ================= FOOTER ================= -->
+<!-- FOOTER -->
 <footer class="main-footer">
-
     <div class="footer-container">
-
-        <!-- Services -->
         <div class="footer-column">
             <h3>Services</h3>
             <ul>
                 <li>Environmental Testing</li>
                 <li>Food Testing</li>
                 <li>Drug Testing</li>
-                <li>Research Consultancy Services</li>
+                <li>Research Consultancy</li>
             </ul>
         </div>
 
-        <!-- Address -->
         <div class="footer-column">
             <h3>Our Address</h3>
             <p>
                 Robust Materials Technology Pvt. Ltd.<br>
-                No.94, 3rd Floor, Thirumala Complex,<br>
-                NGEF Layout, Nagarabhavi,<br>
-                Bengaluru - 560 072, India.
+                Nagarabhavi, Bengaluru – 560072
             </p>
         </div>
 
-        <!-- Contact -->
         <div class="footer-column">
-            <h3>Contact Us</h3>
-            <p>📱 +91 96866 95557</p>
-            <p>☎️ +91-80-2318 6230</p>
+            <h3>Contact</h3>
+            <p>📞 +91 96866 95557</p>
             <p>✉️ info@robustmaterials.com</p>
-
-            <div class="social-icons">
-                <span>f</span>
-                <span>in</span>
-                <span>📷</span>
-                <span>🟢</span>
-            </div>
         </div>
-
     </div>
 
-    <!-- Bottom Footer -->
     <div class="footer-bottom">
         <p>
-            Copyright © 2022 Robust Materials Technology Pvt. Ltd. All Rights Reserved
+            Copyright © 2022 Robust Materials Technology Pvt. Ltd.
         </p>
         <p>
-            Designed by <strong>VR Institute</strong> | IT Department
+            Designed by <b>VR Institute</b> | IT Department
         </p>
     </div>
-
 </footer>
 
+<script src="./js/app.js"></script>
+</body>
 </html>

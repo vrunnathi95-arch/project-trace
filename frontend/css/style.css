@@ -284,6 +284,38 @@ body {
     color: #9e9e9e;
 }
 
+/* Upload bar below header */
+.upload-bar {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 40px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.upload-btn {
+    background: #f4f6fb;
+    color: #1f3a8a;
+    border: 1px solid #d0d7f2;
+    padding: 10px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.upload-btn:hover {
+    background: #1f3a8a;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(31, 58, 138, 0.2);
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .footer-container {
