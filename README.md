@@ -1,148 +1,240 @@
-# Project--Trace 🔍  
+f # ProjectTrace
+
 ### Intelligent Digital Archival & Semantic Search System
 
-**Project--Trace** is an AI-powered digital archival platform designed for **Robust Materials Technology Pvt. Ltd.**  
-It enables **context-based semantic search**, **OCR metadata exploration**, and **project lifecycle tracking** for laboratory and research documents.
+**Robust Materials Technology Pvt. Ltd.**
 
 ---
 
-## 🚀 Key Features
+## 🚀 Overview
 
-- 🔎 **Semantic Search (Context-Based)**
-  - Search documents using natural language queries
-  - Powered by Sentence Transformers (`all-MiniLM-L6-v2`)
-  
-- 📄 **OCR Metadata Utilization**
-  - Search across extracted OCR text, summaries, keywords, techniques, and APIs
+**ProjectTrace** is an AI-powered digital archival platform designed for structured storage, semantic retrieval, and lifecycle tracking of laboratory project documentation.
 
-- 📆 **Date-Based Filtering**
-  - Exact date search
-  - Date range filtering (From–To)
+The system enables:
 
-- 🗂️ **Version-Aware Document Management**
-  - Automatically updates documents based on project ID + title
-  - Retains only the latest version
+* Secure ingestion of project metadata via Excel/CSV upload
+* Version-controlled document updates
+* Context-based semantic search using transformer embeddings
+* Intelligent ranking of archival records
+* Structured metadata display with OCR text integration
 
-- 🖥️ **Interactive UI/UX**
-  - Google-like search flow
-  - Clickable results → detailed document view
-  - Modern industry-grade UI inspired by Dribbble designs
-
-- 📤 **Bulk Upload**
-  - Upload CSV / Excel files for metadata ingestion
+The platform is built using **FastAPI + PostgreSQL + Sentence Transformers**, following a production-style full-stack architecture.
 
 ---
 
-## 🧠 Tech Stack
+## 🏗 System Architecture
 
-### Backend
-- **FastAPI**
-- **PostgreSQL**
-- **psycopg**
-- **Sentence Transformers**
-- **Scikit-learn**
-- **Pandas**
+```
+project-trace/
+│
+├── backend/
+│   ├── main.py
+│   ├── db.py
+│   ├── uploads/
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── index.html
+│   ├── css/style.css
+│   ├── js/app.js
+│   └── assets/
+```
 
-### Frontend
-- **HTML5**
-- **CSS3**
-- **Vanilla JavaScript**
-- Custom UI/UX (Industry-focused)
+### Key Design Decisions
 
----
-
-## 🧠 Technology Stack
-
-### Backend
-- **FastAPI** – High-performance API framework
-- **PostgreSQL** – Relational database
-- **psycopg** – PostgreSQL adapter
-- **Pandas** – Data ingestion & validation
-
-### AI / ML
-- **Sentence-Transformers**
-- Model: `all-MiniLM-L6-v2`
-- **Cosine Similarity** for ranking
-
-### Frontend
-- **HTML5 / CSS3 / JavaScript**
-- Modular file structure
-- Fully decoupled frontend & backend
+* Frontend served directly from FastAPI (`/static`)
+* Unified server (no separate frontend runtime required)
+* Semantic embeddings computed dynamically
+* Version-aware UPSERT logic for document updates
+* Clean separation of UI, API, and database layers
 
 ---
 
-## 🗄 Database Design
+## ⚙️ Technology Stack
 
-### Table: `document_metadata`
-
-| Column | Description |
-|------|-------------|
-| record_id | UUID (Primary Key) |
-| document_title | Document name |
-| project_documents | Source type |
-| project_id | Project identifier |
-| product_api_name | API / Product |
-| technique | Experimental technique |
-| document_date | Document date |
-| archived_date | Archive date |
-| version | Version number |
-| ocr_text | OCR extracted text |
-| keywords | Indexed keywords |
-| summary | Short document summary |
+| Layer       | Technology                                 |
+| ----------- | ------------------------------------------ |
+| Backend API | FastAPI                                    |
+| Database    | PostgreSQL                                 |
+| DB Driver   | Psycopg                                    |
+| ML Model    | sentence-transformers (`all-MiniLM-L6-v2`) |
+| Frontend    | HTML, CSS, JavaScript                      |
+| Server      | Uvicorn                                    |
 
 ---
 
-## 🔁 Upload Logic
+## 🧠 Core Features
 
-- Documents are **inserted or updated automatically**
-- Updates occur **only if uploaded version is higher**
-- Prevents duplicate records
-- Maintains clean project history
+### 1️⃣ Semantic Search
 
----
+* Context-based search using transformer embeddings
+* Cosine similarity ranking
+* Top-K result retrieval
+* Google-style UX collapse behavior
 
-## 🔍 Semantic Search Workflow
+### 2️⃣ Metadata Ingestion
 
-1. User submits natural language query
-2. Query converted to embedding
-3. Documents combined text fields:
-   - Title
-   - Technique
-   - Keywords
-   - Summary
-   - OCR text
-4. Cosine similarity computed
-5. Top-K ranked results returned
+* Upload `.csv`, `.xls`, `.xlsx`
+* Automatic schema validation
+* Required columns enforced
+* Insert or version-aware update using:
 
----
+```sql
+ON CONFLICT (project_id, document_title)
+DO UPDATE
+WHERE document_metadata.version < EXCLUDED.version
+```
 
-## Running the Project
+### 3️⃣ Version Control
 
-### Backend Setup
-python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+* Updates only when incoming version is greater
+* Prevents accidental overwrites
+* Maintains project lifecycle integrity
+
+### 4️⃣ Document Detail View
+
+* Full metadata display
+* OCR text preview
+* Structured project information
+* Scroll-to-detail UX behavior
+
+### 5️⃣ Unified Server Execution
+
+Frontend and backend run using a single command:
+
+```bash
 uvicorn main:app --reload
+```
 
-Backend runs at:
+No separate frontend server is required.
+
+---
+
+## 🗄 Database Schema
+
+Table: `document_metadata`
+
+| Column            | Type               |
+| ----------------- | ------------------ |
+| record_id         | UUID (Primary Key) |
+| document_title    | TEXT               |
+| project_documents | TEXT               |
+| project_id        | CHAR               |
+| product_api_name  | CHAR               |
+| technique         | CHAR               |
+| document_date     | DATE               |
+| archived_date     | DATE               |
+| version           | INTEGER            |
+| ocr_text          | TEXT               |
+| keywords          | TEXT               |
+| summary           | TEXT               |
+
+---
+
+## 📦 Installation Guide
+
+### 1️⃣ Clone Repository
+
+```bash
+git clone <repo-url>
+cd project-trace/backend
+```
+
+### 2️⃣ Create Virtual Environment
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+### 3️⃣ Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4️⃣ Configure PostgreSQL
+
+Ensure PostgreSQL is running and update `db.py` with your database credentials.
+
+---
+
+## ▶️ Running the Application
+
+From inside the `backend/` directory:
+
+```bash
+uvicorn main:app --reload
+```
+
+Then open in browser:
+
+```
 http://127.0.0.1:8000
+```
 
-Frontend Setup:
-python -m http.server 5500
+---
 
-Open in browser:
-http://127.0.0.1:5500/index.html
+## 📤 Upload Format Requirements
 
-👩‍💻 Author
+Excel/CSV file must contain the following columns:
 
-VR Institute
+```
+document_title
+project_documents
+project_id
+product_api_name
+technique
+document_date
+archived_date
+version
+ocr_text
+keywords
+summary
+```
+
+---
+
+## 🔎 Semantic Search Flow
+
+1. User enters contextual query
+2. Backend fetches document metadata
+3. Combined searchable text constructed from:
+
+   * Title
+   * API
+   * Technique
+   * Keywords
+   * Summary
+   * OCR text
+4. Embeddings generated
+5. Cosine similarity computed
+6. Ranked results returned
+
+---
+
+## 🎨 UI/UX Highlights
+
+* Google-style search experience
+* Collapsible hero section
+* Smooth animations
+* Enterprise-style footer
+* Upload feedback handling
+* Responsive layout
+* Clean industrial design aesthetic
+
+---
+
+## 👨‍💻 Developed By
+
+**VR Institute**
 IT Department
-
-Designed and developed for
 Robust Materials Technology Pvt. Ltd.
 
-© License & Copyright
+---
 
-Copyright © 2022
-Robust Materials Technology Pvt. Ltd.
-All Rights Reserved.
+## 📜 License
+
+Internal enterprise tool for Robust Materials Technology Pvt. Ltd.
+
+---
