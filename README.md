@@ -1,4 +1,4 @@
-f # ProjectTrace
+# ProjectTrace
 
 ### Intelligent Digital Archival & Semantic Search System
 
